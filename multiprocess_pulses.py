@@ -57,8 +57,9 @@ def process_pulses(subset_low_idx, subset_high_idx):
         # print("-------------------- PULSE INDEX ",
         #       pulse_idx, " ------------------------------")
         # print("-------------------------------------------------------------------------------")
-        if pulse_idx % 1000 == 0:
-            print(100*(pulse_idx/subset_high_idx), " perc done...")
+        if (pulse_idx-subset_low_idx) % 100 == 0:
+            print(100*(pulse_idx-subset_low_idx) /
+                  (subset_high_idx-subset_low_idx), " perc done...")
 
         pulse = sp.Pulse(pulse_collection, pulse_timestamps, pulse_idx)
 
