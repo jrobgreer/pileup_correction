@@ -53,10 +53,13 @@ def process_pulses(subset_low_idx, subset_high_idx):
 
     for pulse_idx in range(subset_low_idx, subset_high_idx):
 
-        print("-------------------------------------------------------------------------------")
-        print("-------------------- PULSE INDEX ",
-              pulse_idx, " ------------------------------")
-        print("-------------------------------------------------------------------------------")
+        # print("-------------------------------------------------------------------------------")
+        # print("-------------------- PULSE INDEX ",
+        #       pulse_idx, " ------------------------------")
+        # print("-------------------------------------------------------------------------------")
+        if pulse_idx % 1000 == 0:
+            print(100*(pulse_idx/subset_high_idx), " perc done...")
+
         pulse = sp.Pulse(pulse_collection, pulse_timestamps, pulse_idx)
 
         # pulse.butter_lowpass_filtfilt(cutoff=15e6, fs=250e6, plotting=False) #25e6 was

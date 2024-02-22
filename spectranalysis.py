@@ -114,7 +114,7 @@ class Pulse:
         # Check for encroaching pulses from previous record
         if np.median(self.record[:10]) > 500:
             self.pulse_suitable = False
-            print("Encroaching previous pulse, skip to next...")
+            # print("Encroaching previous pulse, skip to next...")
             return
 
         # plt.close()
@@ -135,9 +135,9 @@ class Pulse:
         # To do this, set anything before the first peak to 0, for a sharp rise
         try:
             first_neg_grad = np.argmax(self.gradient < -20)
-            print(first_neg_grad)
+            # print(first_neg_grad)
             threshold_idx = np.argmax(self.record[:first_neg_grad])
-            print(threshold_idx)
+            # print(threshold_idx)
             self.record[:threshold_idx] = 0
             # plt.plot(self.record, label='Shoulder removed')
             # plt.legend()
@@ -145,8 +145,10 @@ class Pulse:
             # self.record[:first_neg_grad] = 0
 
         except ValueError:
-            print("Gradient never less than -20 ")
-            print("First pulse shoulder not corrected")
+            # print("Gradient never less than -20 ")
+            pass
+            # print("First pulse shoulder not corrected")
+
             # plt.plot(self.record, label='Edited')
             # plt.axvline(first_neg_grad)
             # plt.plot(self.gradient, label='gradient')
@@ -315,22 +317,25 @@ class Pulse:
         # If too small, separation tricky, skip over
         try:
             gaps_between_pulses = np.diff(self.rise_indices)
-            print(gaps_between_pulses)
+            # print(gaps_between_pulses)
         except AttributeError:
-            print("Bad pulse, do not fit, move to next...")
+            pass
+            # print("Bad pulse, do not fit, move to next...")
 
         try:
-            print(np.min(gaps_between_pulses))
-            print(closest_distance)
+            # print(np.min(gaps_between_pulses))
+            # print(closest_distance)
             if np.min(gaps_between_pulses) < closest_distance:
-                print("Pulses too close, skipping to next pulse")
+                # print("Pulses too close, skipping to next pulse")
                 self.pulse_suitable = False
 
         except ValueError:
-            print("One pulse waveform, continuing with fit...")
+            pass
+            # print("One pulse waveform, continuing with fit...")
 
         except UnboundLocalError:
-            print("Diffs not calculated")
+            pass
+            # print("Diffs not calculated")
 
         if self.pulse_suitable == True:
 
@@ -385,8 +390,8 @@ class Pulse:
                 fit_time = end_time - start_time
 
                 # print("---------------------------------------------------------------------------")
-                print("Time to fit: ", fit_time)
-                print("Fit status: ", fit_result.Status())
+                # print("Time to fit: ", fit_time)
+                # print("Fit status: ", fit_result.Status())
                 # print("---------------------------------------------------------------------------")
 
                 # canvas = ROOT.TCanvas(
@@ -401,12 +406,10 @@ class Pulse:
                 fitted_pulse = np.array([guo_fit([t], [fit_function.GetParameter(i) for i in range(
                     fit_function.GetNpar())]) for t in np.linspace(rise_idx, len(self.record), len(self.record)-rise_idx)])
 
-                print(len(self.record))
+                # print(len(self.record))
 
-                print(np.linspace(rise_idx, len(self.record),
-                      len(self.record)-rise_idx))
-                print(
-                    len(np.linspace(rise_idx, len(self.record), len(self.record)-rise_idx)))
+                # print(np.linspace(rise_idx, len(self.record),len(self.record)-rise_idx))
+                # print(len(np.linspace(rise_idx, len(self.record), len(self.record)-rise_idx)))
                 # After fit subtraction, area is a good indicator of whether a bad fit has badly messed up the remaining pulse
                 corrected_pulse_area = np.sum(fitted_pulse)
 
@@ -420,7 +423,7 @@ class Pulse:
                 self.true_timestamps.append(
                     self.timestamp + (rise_idx - self.rise_indices[0])*8)
                 self.areas.append(np.sum(fitted_pulse))
-                print("FIT AREA : ", np.sum(fitted_pulse))
+                # print("FIT AREA : ", np.sum(fitted_pulse))
 
                 self.chi2.append(fit_function.GetChisquare())
                 self.ndf.append(fit_function.GetNDF())
