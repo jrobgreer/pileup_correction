@@ -9,11 +9,11 @@ import pandas as pd
 print("Num CPUs available: ", multiprocessing.cpu_count())
 
 # Add argparser TODO
-file = 'testdataGENERATORlong.dat'
+file = 'digitiser_data/cs137co60calib.dat'
 cpus_available = multiprocessing.cpu_count()-1
 
 pulse_collection, pulse_timestamps = gw.get_pulse_collection(
-    file, baseline=0.1)
+    file, baseline=0.1, fraction_of_dataset=0.4)
 
 # Need to split pulse_collection for CPUs
 print(len(pulse_collection))
