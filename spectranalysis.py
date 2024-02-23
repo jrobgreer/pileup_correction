@@ -133,28 +133,28 @@ class Pulse:
         # Remove strange noise shoulders on first pulse - need to find source of these, if noise, ok, but
         # what if these are real pulses tangled up in the rise of the bigger pulse?
         # To do this, set anything before the first peak to 0, for a sharp rise
-        try:
-            first_neg_grad = np.argmax(self.gradient < -20)
-            # print(first_neg_grad)
-            threshold_idx = np.argmax(self.record[:first_neg_grad])
-            # print(threshold_idx)
-            self.record[:threshold_idx] = 0
-            # plt.plot(self.record, label='Shoulder removed')
-            # plt.legend()
-            # plt.show()
-            # self.record[:first_neg_grad] = 0
+        # try:
+        #     first_neg_grad = np.argmax(self.gradient < -20)
+        #     # print(first_neg_grad)
+        #     threshold_idx = np.argmax(self.record[:first_neg_grad])
+        #     # print(threshold_idx)
+        #     self.record[:threshold_idx] = 0
+        #     # plt.plot(self.record, label='Shoulder removed')
+        #     # plt.legend()
+        #     # plt.show()
+        #     # self.record[:first_neg_grad] = 0
 
-        except ValueError:
-            # print("Gradient never less than -20 ")
-            pass
-            # print("First pulse shoulder not corrected")
+        # except ValueError:
+        #     pass
 
-            # plt.plot(self.record, label='Edited')
-            # plt.axvline(first_neg_grad)
-            # plt.plot(self.gradient, label='gradient')
-            # plt.legend()
-            # plt.show()
-            # self.pulse_suitable = False
+        # print("First pulse shoulder not corrected")
+
+        # plt.plot(self.record, label='Edited')
+        # plt.axvline(first_neg_grad)
+        # plt.plot(self.gradient, label='gradient')
+        # plt.legend()
+        # plt.show()
+        # self.pulse_suitable = False
 
         # plt.plot(self.record, label='Edited')
         # plt.axvline(first_neg_grad)
@@ -367,6 +367,7 @@ class Pulse:
                 # graph.SetMarkerColor(4)
 
                 # print("AMPLITUDE: ", np.max(self.record[rise_idx:fit_end]))
+
                 # Only fit up to next rise
                 fit_function = ROOT.TF1(
                     'guo_fit', guo_fit, rise_idx, fit_end, 4)

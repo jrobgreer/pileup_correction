@@ -6,7 +6,7 @@ import plotly.express as px
 
 
 # data = pd.read_csv("pileupcorrection50perc.csv")
-data = pd.read_csv("Calib_EXTRADATA.csv")
+# data = pd.read_csv("Calib_EXTRADATA.csv")
 # print(data['EventID'].unique())
 
 # plt.hist(data['Area'][data['Par3'] > 18],
@@ -19,10 +19,21 @@ data = pd.read_csv("Calib_EXTRADATA.csv")
 
 # print("Total fit time: ", np.sum(data['Time to fit'])/60, " mins")
 # plt.hist(data['Area'], bins=np.linspace(0, 300000, 200), histtype='step')
-data = pd.read_csv("IthinkHydrogen_EXTRADATAwfitresults.csv")
+# data = pd.read_csv("IthinkHydrogen_EXTRADATAwfitresults.csv")
 # data = pd.read_csv('Calib_EXTRADATAwfitresults.csv')
-# data = pd.read_csv('Calib_long.csv')
-# data = data[data['Par3'] > 3]
+data = pd.read_csv('csv_data/testdataGENERATORlong264310_290740.csv')
+data = data[data['Pulse Count'] == 1]
+
+fig, axs = plt.subplots(4, 1)
+
+for idx, par in enumerate(['Par0', 'Par1', 'Par2', 'Par3']):
+    axs[idx].hist(data[par], bins=1000)
+    axs[idx].title.set_text(par)
+
+plt.tight_layout()
+plt.show()
+
+
 for i in data.columns.values:
     plt.hist(data[i], bins=np.linspace(0, 150000, 500),
              histtype='step')

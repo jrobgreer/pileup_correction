@@ -5,7 +5,7 @@ import numpy as np
 import pandas as pd
 
 pulse_collection, pulse_timestamps = gw.get_pulse_collection(
-    'testdataGENERATORlong.dat', baseline=0.1)
+    'testdataGENERATORlong.dat', baseline=0.1, fraction_of_dataset=0.0004)
 # plt.close()
 # plt.hist(pulse_timestamps)
 # plt.show()
@@ -25,10 +25,10 @@ fit_results = []
 rise_point = []
 raw_integrals = []
 
-print("EXPECT ", int(0.035*len(pulse_collection)), " PULSES")
-input("Press to continue")
+# print("EXPECT ", int(*len(pulse_collection)), " PULSES")
 
-for pulse_idx in range(int(0.035*len(pulse_collection))):
+
+for pulse_idx in range(len(pulse_collection)):
 
     print("-------------------------------------------------------------------------------")
     print("-------------------- PULSE INDEX ",
