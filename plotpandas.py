@@ -2,9 +2,10 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import numpy as np
 import matplotlib as mpl
-import plotly.express as px
+# import plotly.express as px
 
-
+# Set the default color cycle
+mpl.rcParams['axes.prop_cycle'] = mpl.cycler(color=["r", "k", "c"])
 # data = pd.read_csv("pileupcorrection50perc.csv")
 # data = pd.read_csv("Calib_EXTRADATA.csv")
 # print(data['EventID'].unique())
@@ -21,18 +22,32 @@ import plotly.express as px
 # plt.hist(data['Area'], bins=np.linspace(0, 300000, 200), histtype='step')
 # data = pd.read_csv("IthinkHydrogen_EXTRADATAwfitresults.csv")
 # data = pd.read_csv('Calib_EXTRADATAwfitresults.csv')
-data = pd.read_csv('csv_data/testdataGENERATORlong264310_290740.csv')
-data = data[data['Pulse Count'] == 1]
+data = pd.read_csv('csv_data/cs137co60calib48944_61179.csv')
+# data = data[data['Pulse Count'] == 1]
 
-fig, axs = plt.subplots(4, 1)
+fig, axs = plt.subplots(5, 1)
 
-for idx, par in enumerate(['Par0', 'Par1', 'Par2', 'Par3']):
-    axs[idx].hist(data[par], bins=1000)
-    axs[idx].title.set_text(par)
+for idx, par in enumerate(['Par0', 'Par1', 'Par2', 'Par3', 'Area']):
+    if par == 'Area':
+        axs[idx].hist(data[par], bins=1000, log=True)
+        # axs[idx].grid()
+        axs[idx].title.set_text(par)
+    else:
+        axs[idx].hist(data[par], bins=1000)
+        # axs[idx].grid()
+        axs[idx].title.set_text(par)
 
 plt.tight_layout()
 plt.show()
+plt.close()
 
+plt.hist(data['Area'], bins=np.linspace(
+    0, 150000, 1000), label='Original Spectrum')
+# data = data[data['Par3'] > 5]
+# plt.hist(data['Area'], bins=np.linspace(
+#     0, 150000, 1000), label='Cut on par3>5')
+plt.legend()
+plt.show()
 
 for i in data.columns.values:
     plt.hist(data[i], bins=np.linspace(0, 150000, 500),

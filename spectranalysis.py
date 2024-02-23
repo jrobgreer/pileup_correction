@@ -378,8 +378,8 @@ class Pulse:
                 fit_function.SetParLimits(0, np.max(
                     1*self.record[rise_idx:fit_end]), 2*np.max(self.record[rise_idx:fit_end]))
                 # fit_function.SetParLimits(1, rise_idx-2, rise_idx+2)
-                fit_function.SetParLimits(2, 20, 300)
-                fit_function.SetParLimits(3, 2, 20)
+                fit_function.SetParLimits(2, 60, 75)
+                fit_function.SetParLimits(3, 6, 10)
 
                 start_time = time.time()
 
