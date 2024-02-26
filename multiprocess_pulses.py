@@ -9,7 +9,7 @@ import pandas as pd
 print("Num CPUs available: ", multiprocessing.cpu_count())
 
 # Add argparser TODO
-file = 'digitiser_data/cs137co60calib.dat'
+file = '/home/james/pdra_neutron/cs137co60calib.dat'
 cpus_available = multiprocessing.cpu_count()-1
 
 pulse_collection, pulse_timestamps = gw.get_pulse_collection(
@@ -26,8 +26,6 @@ print(pulses_per_cpu)
 subsets = [[i*pulses_per_cpu, (i+1)*pulses_per_cpu-1]
            for i in range(0, cpus_available)]
 print(subsets)
-
-input("WAIT")
 
 
 def process_pulses(subset_low_idx, subset_high_idx):

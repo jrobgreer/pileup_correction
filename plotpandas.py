@@ -3,6 +3,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 import matplotlib as mpl
 # import plotly.express as px
+import glob as glob
 
 # Set the default color cycle
 mpl.rcParams['axes.prop_cycle'] = mpl.cycler(color=["r", "k", "c"])
@@ -22,12 +23,21 @@ mpl.rcParams['axes.prop_cycle'] = mpl.cycler(color=["r", "k", "c"])
 # plt.hist(data['Area'], bins=np.linspace(0, 300000, 200), histtype='step')
 # data = pd.read_csv("IthinkHydrogen_EXTRADATAwfitresults.csv")
 # data = pd.read_csv('Calib_EXTRADATAwfitresults.csv')
-data = pd.read_csv('csv_data/cs137co60calib48944_61179.csv')
-# data = data[data['Pulse Count'] == 1]
+datas = []
+for file in glob.glob('csv_data/csv_data-20240223T154029Z-001/csv_data/soil*'):
+    print(file)
 
-fig, axs = plt.subplots(5, 1)
+    data = pd.read_csv(file)
+    datas.append(data)
 
-for idx, par in enumerate(['Par0', 'Par1', 'Par2', 'Par3', 'Area']):
+data = pd.concat(datas)
+
+# data = data[data['Par2'] > 50]
+# data = data[data['Par2'] < 70]
+
+fig, axs = plt.subplots(6, 1)
+
+for idx, par in enumerate(['Par1', 'Par2', 'Par3', 'Area', 'FitResult']):
     if par == 'Area':
         axs[idx].hist(data[par], bins=1000, log=True)
         # axs[idx].grid()
