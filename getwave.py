@@ -1,4 +1,5 @@
-from gimmedatwave.gimmedatwave import gimmedatwave as gdw
+# from gimmedatwave.gimmedatwave import gimmedatwave as gdw
+from gimmedatwave import gimmedatwave as gdw
 import matplotlib.pyplot as plt
 import numpy as np
 
