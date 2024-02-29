@@ -173,6 +173,7 @@ class Pulse:
 
     def fit2(self, closest_distance=25, fit_options='QRS'):
 
+        # plt.close()
         # plt.plot(self.record, label='Remove shoulder + mov avg')
 
         # plt.scatter(self.rise_indices,
@@ -242,7 +243,7 @@ class Pulse:
                 fit_function.SetParameters(
                     1.5*np.max(self.record[rise_idx:fit_end]), self.rise_indices[idx], 50, 10)
 
-                fit_function.FixParameter(1, rise_idx)
+                fit_function.SetParLimits(1, rise_idx-3, rise_idx+3)
                 fit_function.SetParLimits(0, np.max(
                     1*self.record[rise_idx:fit_end]), 2*np.max(self.record[rise_idx:fit_end]))
                 # fit_function.SetParLimits(1, rise_idx-2, rise_idx+2)
@@ -275,6 +276,9 @@ class Pulse:
                 fitted_pulse = np.array([guo_fit([t], [fit_function.GetParameter(i) for i in range(
                     fit_function.GetNpar())]) for t in np.linspace(rise_idx, len(self.record), len(self.record)-rise_idx)])
 
+                # Make fitted pulse only positive
+                fitted_pulse[fitted_pulse < 0] = 0
+
                 # print(len(self.record))
 
                 # print(np.linspace(rise_idx, len(self.record),len(self.record)-rise_idx))
@@ -283,10 +287,6 @@ class Pulse:
                 corrected_pulse_area = np.sum(fitted_pulse)
 
                 self.remaining_pulse_area.append(corrected_pulse_area)
-
-                # NOTE tune this value
-                # if corrected_pulse_area < -1000:
-                #     print("Bad fit, remaining pulse mangled")
 
                 # Get the timestamp, will be relative to the timestamp of the event at trigger point (first peak rise) in nanosecs
                 self.true_timestamps.append(
@@ -314,7 +314,7 @@ class Pulse:
 
                 # plt.close()
 
-                # plt.plot(self.record, label='Original Pulse')
+                plt.plot(self.record[rise_idx:], label='Original Pulse')
 
                 # Correct wfm
                 self.record[rise_idx:] = self.record[rise_idx:] - fitted_pulse
@@ -322,12 +322,12 @@ class Pulse:
                 # print("Pulses in record: ", len(self.rise_indices))
                 # print("Timestamps: ", self.true_timestamps)
 
-                # plt.plot(fitted_pulse, label='Fitted pulse')
-                # plt.plot(self.record[rise_idx:],
-                #          label='Waveform minus Fitted Pulse')
+                plt.plot(fitted_pulse, label='Fitted pulse')
+                plt.plot(self.record[rise_idx:],
+                         label='Waveform minus Fitted Pulse')
 
-                # plt.legend()
-                # plt.show()
+                plt.legend()
+                plt.show()
 
                 del fitted_pulse
                 del fit_function

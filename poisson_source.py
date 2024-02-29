@@ -79,9 +79,13 @@ def generate_event_record(dataset, noise=False, initial_offset=150, source_activ
             for pulse in range(1, pulses_in_interval + 1, 1):
                 # print(f"Pulse @ {i + initial_offset}")
 
+                sampled_pulse = data.sample()
+
                 # Draw random pulse from Co60 spectrum
-                params = [data.sample()[par].values
+                params = [sampled_pulse[par].values
                           for par in ['Par0', 'Par1', 'Par2', 'Par3']]
+
+                area = sampled_pulse['Area']
 
                 # Put the pulse at position i by setting rise index parameter
                 params[1] = i + initial_offset
@@ -113,7 +117,7 @@ def generate_waveform_array(datafile, number_of_waveforms, noise=False, initial_
     record_array = np.zeros(shape=(number_of_waveforms, 1030))
     for i in range(0, number_of_waveforms):
         # TODO fix arguments here, do it properly
-        record_array[i] = generate_event_record(dataset, number_of_waveforms, noise, initial_offset,
+        record_array[i] = generate_event_record(dataset, noise, initial_offset,
                                                 source_activity, detector_efficiency, distance_to_source, approx_detector_area)
 
     print(record_array)
@@ -121,8 +125,7 @@ def generate_waveform_array(datafile, number_of_waveforms, noise=False, initial_
     return record_array
 
 
-record_array = generate_waveform_array(
-    '/home/james/pileup_correction/csv_data/cs137co60calib48944_61179.csv', 1000)
+record_array = generate_waveform_array('/home/james/pileup_correction/csv_data/cs137co60calib48944_61179.csv', 1000, noise=True,
+                                       initial_offset=150, source_activity=1e9, detector_efficiency=0.3, distance_to_source=1, approx_detector_area=0.025)
 
-
-np.savetxt('testwfms.txt', record_array)
+np.savetxt('1kRecords_NoiseTrue_InitialOffset150_Activity1e9_Eff0p3_DistToSource1m_ApproxDetArea_0.025.txt', record_array)

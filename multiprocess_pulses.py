@@ -9,11 +9,18 @@ import pandas as pd
 print("Num CPUs available: ", multiprocessing.cpu_count())
 
 # Add argparser TODO
+
 file = '/home/james/pdra_neutron/cs137co60calib.dat'
 cpus_available = multiprocessing.cpu_count()-1
+# cpus_available = 2
 
 pulse_collection, pulse_timestamps = gw.get_pulse_collection(
     file, baseline=0.1, fraction_of_dataset=0.4)
+
+# pulse_collection = np.loadtxt(
+#     '100kRecords_NoiseFalse_InitialOffset150_Activity1e9_Eff0p3_DistToSource1m_ApproxDetArea_0.025.txt')
+
+# pulse_timestamps = np.zeros(len(pulse_collection))
 
 # Need to split pulse_collection for CPUs
 print(len(pulse_collection))
