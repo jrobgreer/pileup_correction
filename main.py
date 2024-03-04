@@ -10,7 +10,7 @@ import pandas as pd
 
 # Or load in a simulated dataset
 pulse_collection = np.loadtxt(
-    '1kRecords_NoiseTrue_InitialOffset150_Activity1e9_Eff0p3_DistToSource1m_ApproxDetArea_0.025.txt')
+    '1kRecords_NoiseTrue_InitialOffset150_Activity1e6_Eff0p3_DistToSource1m_ApproxDetArea_0.025.txt')
 
 pulse_timestamps = np.zeros(len(pulse_collection))
 
@@ -46,8 +46,9 @@ for pulse_idx in range(len(pulse_collection)):
 
     # pulse.butter_lowpass_filtfilt(cutoff=15e6, fs=250e6, plotting=False) #25e6 was
     # pulse.raw_int()
-    pulse.get_peaks2(min_dist_between_peaks=20, gradient_threshold=16)
-    pulse.fit2(closest_distance=21, fit_options='QRS')
+    pulse.get_peaks2(min_dist_between_peaks=25, gradient_threshold=12)
+    # pulse.fit2(closest_distance=21, fit_options='QRS')
+    pulse.multi_fit()
 
     areas.append(pulse.areas)
     timestamps.append(pulse.true_timestamps)
